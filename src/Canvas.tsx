@@ -1,6 +1,7 @@
 import { Note } from './Note.tsx';
 import { useState } from 'react';
 import type { SubmitEvent } from 'react';
+import { MIN_NOTE_HEIGHT, MIN_NOTE_WIDTH } from './constants.ts';
 
 interface NoteConfig {
   id: number;
@@ -27,7 +28,7 @@ export function Canvas() {
   const [newNoteConfig, setNewNoteConfig] = useState<NoteConfig>(initialConfig);
 
   const createNewNote = () => {
-    const newNote = { ...newNoteConfig, id: nextNoteId, text: `Note ${nextNoteId}` };
+    const newNote = { ...newNoteConfig, id: nextNoteId, text: `Note #${nextNoteId}` };
     setNotes([...notes, newNote]);
     setNextNoteId((prevNoteId) => prevNoteId + 1);
     resetNoteConfig();
@@ -91,7 +92,7 @@ export function Canvas() {
                   className="w-full p-2 border border-gray-300 rounded text-sm"
                   value={newNoteConfig.width}
                   onChange={(e) => setNewNoteConfig({ ...newNoteConfig, width: parseInt(e.target.value) })}
-                  min="100"
+                  min={MIN_NOTE_WIDTH}
                   required
                 />
               </div>
@@ -102,7 +103,7 @@ export function Canvas() {
                   className="w-full p-2 border border-gray-300 rounded text-sm"
                   value={newNoteConfig.height}
                   onChange={(e) => setNewNoteConfig({ ...newNoteConfig, height: parseInt(e.target.value) })}
-                  min="100"
+                  min={MIN_NOTE_HEIGHT}
                   required
                 />
               </div>
