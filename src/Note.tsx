@@ -1,8 +1,16 @@
 import { useState, useRef } from 'react';
 import type { PointerEvent } from 'react';
 
-export function Note() {
-  const [position, setPosition] = useState({ x: 100, y: 100 });
+interface NoteProps {
+  text: string;
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export function Note({ text, x, y, width, height }: NoteProps) {
+  const [position, setPosition] = useState({ x: x, y: y });
   const elementRef = useRef<HTMLDivElement | null>(null);
   const dragData = useRef({
     isDragging: false,
@@ -13,7 +21,9 @@ export function Note() {
   });
 
   const handlePointerDown = (e: PointerEvent<HTMLDivElement>) => {
-    if (!elementRef.current) return;
+    if (!elementRef.current) {
+      return;
+    }
 
     elementRef.current.style.cursor = 'grab';
 
@@ -24,7 +34,9 @@ export function Note() {
   };
 
   const handlePointerMove = (e: PointerEvent<HTMLDivElement>) => {
-    if (!dragData.current.isDragging || !elementRef.current) return;
+    if (!dragData.current.isDragging || !elementRef.current) {
+      return;
+    }
 
     dragData.current.currentX = e.clientX - dragData.current.offsetX;
     dragData.current.currentY = e.clientY - dragData.current.offsetY;
@@ -32,7 +44,9 @@ export function Note() {
   };
 
   const handlePointerUp = (e: PointerEvent<HTMLDivElement>) => {
-    if (!elementRef.current) return;
+    if (!elementRef.current) {
+      return;
+    }
 
     elementRef.current.style.cursor = 'initial';
 
@@ -51,14 +65,16 @@ export function Note() {
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerUp}
       style={{
-        position: 'absolute',
-        width: 200,
-        height: 200,
-        background: 'yellow',
+        width: width,
+        height: height,
         transform: `translate(${position.x}px, ${position.y}px)`,
       }}
+      className="absolute p-4 bg-yellow-100 border border-yellow-200 rounded-lg shadow-[0_2px_8px_rgba(0,0,0,0.12)] text-gray-800 cursor-grab active:cursor-grabbing select-none touch-none"
     >
-      Sticky Note
+      <textarea
+        className="w-full h-full bg-transparent resize-none outline-none text-gray-800 placeholder:text-gray-500"
+        defaultValue={text}
+      />
     </div>
   );
 }

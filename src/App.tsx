@@ -1,12 +1,12 @@
-import './App.css'
+import './App.css';
+import { Canvas } from './Canvas.tsx';
 
 function App() {
-
   return (
     <>
-      Yo
+      <Canvas />
     </>
-  )
+  );
 }
 
-export default App
+export default App;
